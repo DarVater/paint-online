@@ -9,6 +9,11 @@ import Eraser from "../tools/Eraser";
 import Line from "../tools/Line";
 
 const Toolbar = () => {
+    const changeColor = e => {
+        toolState.setStrokeColor(e.target.value)
+        toolState.setFillColor(e.target.value)
+    }
+
     return (
         <div className="toolbar">
             <button
@@ -27,7 +32,9 @@ const Toolbar = () => {
                 className="toolbar__btn line"
                 onClick={() => toolState.setTool(new Line(canvasState.canvas))}></button>
 
-            <input type="color" style={{marginLeft: 10}}/>
+            <input
+                onChange={e => changeColor(e)}
+                type="color" style={{marginLeft: 10}}/>
             <button className="toolbar__btn undo"></button>
             <button className="toolbar__btn redo"></button>
             <button className="toolbar__btn save"></button>

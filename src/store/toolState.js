@@ -9,6 +9,17 @@ class ToolState {
     setTool(tool) {
         this.tool = tool
     }
+    setFillColor(color) {
+        this.tool.fillColor = color
+    }
+    setStrokeColor(color) {
+        this.tool.strokeColor = color
+    }
+    setLineWidth(width) {
+        console.log(width)
+        this.tool.lineWidth = width
+    }
+
 
 }
 
