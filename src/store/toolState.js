@@ -6,6 +6,11 @@ class ToolState {
         makeAutoObservable(this)
     }
 
+    getTool() {
+        console.log(this.tool)
+        return this.tool
+    }
+
     setTool(tool) {
         this.tool = tool
     }
