@@ -3,6 +3,8 @@ import './styles/app.scss';
 import Toolbar from "./components/Toolbar";
 import SettingBar from "./components/SettingBar";
 import Canvas from "./components/Canvas";
+import {Routes, Route, Navigate, Redirect, BrowserRouter,} from "react-router-dom";
+import PagePaint from "./pages/PagePaint";
 
 function App() {
     const socket = new WebSocket('ws://localhost:5000/')
@@ -25,12 +27,13 @@ function App() {
         }))
     }
   return (
-    <div className="App">
-        <button onClick={() => sendMassage()}>111111111111</button>
-      <Toolbar></Toolbar>
-      <SettingBar></SettingBar>
-      <Canvas></Canvas>
-    </div>
+      <BrowserRouter>
+          <Routes>
+              <Route path="/:id" element={<PagePaint/>} />
+              <Route path="/" element={<Navigate replace to={`f${(Date.now()).toString(16)}`} />} />
+          </Routes>
+      </BrowserRouter>
+
   );
 }
 
