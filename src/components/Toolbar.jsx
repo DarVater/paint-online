@@ -22,6 +22,15 @@ const Toolbar = () => {
         toolState.setTool(new nameTool(canvasState.canvas, canvasState.socket, canvasState.sessionid) )
     }
 
+    const download = () => {
+        const dataUrl = canvasState.canvas. toDataURL()
+        const a = document.createElement('a')
+        a.href = dataUrl
+        a.download = canvasState.sessionid + ".jpg"
+        document.body.appendChild(a)
+        a.click()
+        document.body.removeChild(a)
+    }
     return (
         <div className="toolbar">
             <div >
@@ -53,7 +62,10 @@ const Toolbar = () => {
                 onClick={() => canvasState.redo()}
                 className="toolbar__btn redo"
             ></button>
-            <button className="toolbar__btn save"></button>
+            <button
+                onClick={() => download()}
+                className="toolbar__btn save"
+            ></button>
         </div>
     );
 };
