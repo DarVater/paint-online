@@ -7,25 +7,6 @@ import {Routes, Route, Navigate, Redirect, BrowserRouter,} from "react-router-do
 import PagePaint from "./pages/PagePaint";
 
 function App() {
-    const socket = new WebSocket('ws://localhost:5000/')
-    socket.onopen = () => {
-        socket.send(JSON.stringify({
-            method: 'connection',
-            id: 555,
-            username: 'vlad'
-        }))
-    }
-    socket.onmessage = (event) => {
-        console.log('С сервера пришло сообшение:', event.data)
-    }
-    const sendMassage = () => {
-        socket.send(JSON.stringify({
-            message: "Привет",
-            method: 'message',
-            id: Date.now(),
-            username: 'vlad'
-        }))
-    }
   return (
       <BrowserRouter>
           <Routes>

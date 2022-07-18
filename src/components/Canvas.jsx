@@ -7,6 +7,7 @@ import Brush from "../tools/Brush";
 import {Button} from "react-bootstrap";
 import {Modal} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {useParams} from "react-router-dom";
 
 const Canvas = observer(() => {
     const canvasRef = useRef()
@@ -18,15 +19,30 @@ const Canvas = observer(() => {
         toolState.setTool(new Brush(canvasRef.current))
     }, [])
 
-    useEffect(() => {
+    const params = useParams()
 
-    }, [])
+    useEffect(() => {
+        if (canvasState.userName) {
+            const socket = new WebSocket('ws://localhost:5000')
+            socket.onopen = () => {
+                socket.send(JSON.stringify({
+                    id: params.id,
+                    username: canvasState.userName,
+                    method: "connection"
+                }))
+            }
+            socket.onmessage = (event) => {
+                console.log(event.data)
+            }
+        }
+    }, [canvasState.userName])
 
     const mouseDownHandler = () => {
         canvasState.pushToUndo(canvasRef.current.toDataURL())
     }
 
     const connectionHandler = () => {
+        console.log(usernameRef.current.value)
         canvasState.setUserName(usernameRef.current.value)
         setModal(false)
     }
