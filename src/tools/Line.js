@@ -1,6 +1,6 @@
 import Tool from "./Tool";
 
-export default class Rect extends Tool {
+export default class Line extends Tool {
     constructor(canvas) {
         super(canvas);
         this.listen()

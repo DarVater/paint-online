@@ -8,6 +8,7 @@ import {Button} from "react-bootstrap";
 import {Modal} from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {useParams} from "react-router-dom";
+import Rect from "../tools/Rect";
 
 const Canvas = observer(() => {
     const canvasRef = useRef()
@@ -16,7 +17,6 @@ const Canvas = observer(() => {
 
     useEffect(() => {
         canvasState.setCanvas(canvasRef.current)
-        toolState.setTool(new Brush(canvasRef.current))
     }, [])
 
     const params = useParams()
@@ -24,6 +24,9 @@ const Canvas = observer(() => {
     useEffect(() => {
         if (canvasState.userName) {
             const socket = new WebSocket('ws://localhost:5000')
+            canvasState.setSocket(socket)
+            canvasState.setSessionid(params.id)
+            toolState.setTool(new Brush(canvasRef.current, socket, params.id))
             socket.onopen = () => {
                 socket.send(JSON.stringify({
                     id: params.id,
@@ -33,9 +36,40 @@ const Canvas = observer(() => {
             }
             socket.onmessage = (event) => {
                 console.log(event.data)
+                let msg = JSON.parse(event.data)
+                console.log(msg)
+                switch (msg.method) {
+                    case "connection":
+                        console.log(`Пользователь ${msg.username} полключился`)
+                        break
+                    case "draw":
+                        drawHandler(msg)
+                        break
+                }
             }
         }
     }, [canvasState.userName])
+
+    const drawHandler = (msg) => {
+        const figure = msg.figure
+        const ctx = canvasRef.current.getContext("2d")
+        switch (figure.type){
+            case "brush":
+                Brush.draw(ctx, figure.x, figure.y)
+                break
+            case "finish":
+                ctx.beginPath()
+                break
+            case "rect":
+                Rect.staticDraw(
+                    ctx,
+                    figure.x, figure.y,
+                    figure.width, figure.height,
+                    figure.color
+                )
+                break
+        }
+    }
 
     const mouseDownHandler = () => {
         canvasState.pushToUndo(canvasRef.current.toDataURL())

@@ -19,7 +19,7 @@ const Toolbar = () => {
 
 
     const changeToolOn = (nameTool) => {
-        toolState.setTool(new nameTool(canvasState.canvas) )
+        toolState.setTool(new nameTool(canvasState.canvas, canvasState.socket, canvasState.sessionid) )
     }
 
     return (
