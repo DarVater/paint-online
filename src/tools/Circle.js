@@ -3,7 +3,11 @@ import Tool from "./Tool";
 export default class Circle extends Tool {
     constructor(canvas) {
         super(canvas);
+        this.className = 'Circle'
         this.listen()
+    }
+    getClassName() {
+        return this.className
     }
 
     listen() {
@@ -12,7 +16,7 @@ export default class Circle extends Tool {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this)
     }
 
-    mouseUpHandler(e) {
+    mouseUpHandler() {
         this.mouseDown  = false
     }
     mouseDownHandler(e) {

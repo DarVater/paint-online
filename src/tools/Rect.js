@@ -3,7 +3,11 @@ import Tool from "./Tool";
 export default class Rect extends Tool {
     constructor(canvas, socket, id) {
         super(canvas, socket, id);
+        this.className = 'Rect'
         this.listen()
+    }
+    getClassName() {
+        return this.className
     }
 
     listen() {
@@ -12,7 +16,7 @@ export default class Rect extends Tool {
         this.canvas.onmouseup = this.mouseUpHandler.bind(this)
     }
 
-    mouseUpHandler(e) {
+    mouseUpHandler() {
         this.mouseDown  = false
         this.socket.send(JSON.stringify({
             method: "draw",

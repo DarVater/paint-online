@@ -7,10 +7,9 @@ import Rect from "../tools/Rect";
 import Circle from "../tools/Circle";
 import Eraser from "../tools/Eraser";
 import Line from "../tools/Line";
-import {observable} from "mobx";
 
 const Toolbar = () => {
-    const [pickedTool, setPickedTool] = useState()
+    const [pickedTool, setPickedTool] = useState(null)
 
     const changeColor = e => {
         toolState.setStrokeColor(e.target.value)
@@ -19,7 +18,9 @@ const Toolbar = () => {
 
 
     const changeToolOn = (nameTool) => {
-        toolState.setTool(new nameTool(canvasState.canvas, canvasState.socket, canvasState.sessionid) )
+        const newTool = new nameTool(canvasState.canvas, canvasState.socket, canvasState.sessionid)
+        setPickedTool(newTool.getClassName())
+        toolState.setTool(newTool)
     }
 
     const download = () => {
@@ -34,23 +35,36 @@ const Toolbar = () => {
 
     return (
         <div className="toolbar">
-            <div >
+            <div className={pickedTool &&
+            pickedTool === "Brush" ? "picked" : ''}>
                 <button
                     className="toolbar__btn brush"
                     onClick={() => changeToolOn(Brush)}></button>
             </div>
-            <button
-                className="toolbar__btn rect"
-                onClick={() => changeToolOn(Rect) }></button>
-            <button
-                className="toolbar__btn circle"
-                onClick={() => changeToolOn(Circle) }></button>
-            <button
-                className="toolbar__btn eraser"
-                onClick={() => changeToolOn(Eraser) }></button>
-            <button
-                className="toolbar__btn line"
-                onClick={() => changeToolOn(Line) }></button>
+            <div className={pickedTool &&
+            pickedTool === "Rect" ? "picked" : ''}>
+                <button
+                    className="toolbar__btn rect"
+                    onClick={() => changeToolOn(Rect) }></button>
+            </div>
+            <div className={pickedTool &&
+            pickedTool === "Circle" ? "picked" : ''}>
+                <button
+                    className="toolbar__btn circle"
+                    onClick={() => changeToolOn(Circle) }></button>
+            </div>
+            <div className={pickedTool &&
+            pickedTool === "Eraser" ? "picked" : ''}>
+                <button
+                    className="toolbar__btn eraser"
+                    onClick={() => changeToolOn(Eraser) }></button>
+            </div>
+            <div className={pickedTool &&
+            pickedTool === "Line" ? "picked" : ''}>
+                <button
+                    className="toolbar__btn line"
+                    onClick={() => changeToolOn(Line) }></button>
+            </div>
 
             <input
                 onChange={e => changeColor(e)}

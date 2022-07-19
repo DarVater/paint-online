@@ -22,7 +22,6 @@ const Canvas = observer(() => {
             .then(response => {
                 const img = new Image()
                 img.src = response.data
-                console.log(img)
                 const ctx = canvasRef.current.getContext("2d")
                 img.onload = () => {
                     ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height)
@@ -47,15 +46,16 @@ const Canvas = observer(() => {
                 }))
             }
             socket.onmessage = (event) => {
-                console.log(event.data)
                 let msg = JSON.parse(event.data)
-                console.log(msg)
                 switch (msg.method) {
                     case "connection":
                         console.log(`Пользователь ${msg.username} полключился`)
                         break
                     case "draw":
                         drawHandler(msg)
+                        break
+                    case "server":
+                        console.log(`Server: ${msg.title}  `)
                         break
                 }
             }
@@ -95,7 +95,7 @@ const Canvas = observer(() => {
     }
 
     return (
-        <div className="canvas"> z
+        <div className="canvas">
             <Modal show={modal} onHide={() => {}}>
                 <Modal.Header closeButton>
                     <Modal.Title>Введите ваше имя</Modal.Title>

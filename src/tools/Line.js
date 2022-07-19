@@ -3,16 +3,20 @@ import Tool from "./Tool";
 export default class Line extends Tool {
     constructor(canvas) {
         super(canvas);
+        this.className = 'Line'
         this.listen()
     }
 
+    getClassName() {
+        return this.className
+    }
     listen() {
         this.canvas.onmousemove = this.mouseMoveHandler.bind(this)
         this.canvas.onmousedown = this.mouseDownHandler.bind(this)
         this.canvas.onmouseup = this.mouseUpHandler.bind(this)
     }
 
-    mouseUpHandler(e) {
+    mouseUpHandler() {
         this.mouseDown  = false
     }
     mouseDownHandler(e) {
